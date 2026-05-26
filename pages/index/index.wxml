@@ -1,0 +1,99 @@
+<!-- pages/index/index.wxml -->
+<view class="index-page">
+  <!-- 背景装饰 -->
+  <view class="bg-decoration">
+    <view class="circle circle-1"></view>
+    <view class="circle circle-2"></view>
+    <view class="circle circle-3"></view>
+  </view>
+
+  <!-- 浮动emoji -->
+  <view class="floating-emojis" wx:if="{{showFloating}}">
+    <text wx:for="{{floatingEmojis}}" wx:key="*this"
+          class="floating-emoji float"
+          style="animation-delay: {{index * 0.5}}s; left: {{10 + index * 18}}%;">
+      {{item}}
+    </text>
+  </view>
+
+  <!-- 主内容区 -->
+  <view class="main-content">
+    <!-- 虚拟形象 -->
+    <view class="avatar-section {{avatarReady ? 'fade-in-up' : ''}}">
+      <view class="avatar-container">
+        <view class="avatar-glow"></view>
+        <view class="avatar {{avatarMood}}">
+          <text class="avatar-face">
+            {{avatarMood === 'happy' ? '😊' : avatarMood === 'thinking' ? '🤔' : avatarMood === 'excited' ? '🤩' : '😉'}}
+          </text>
+        </view>
+        <view class="avatar-ring pulse"></view>
+      </view>
+      <text class="avatar-name">小智</text>
+      <text class="avatar-title">人设工坊助手</text>
+    </view>
+
+    <!-- 对话气泡 -->
+    <view class="chat-area" wx:if="{{bubbleText}}">
+      <view class="bubble-container fade-in-up">
+        <view class="bubble-arrow"></view>
+        <view class="bubble">
+          <text class="bubble-text">{{bubbleText}}</text>
+          <text class="typing-cursor" wx:if="{{typingIndex < fullText.length}}">|</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 引导操作区 -->
+    <view class="guide-section {{showGuide ? 'fade-in-up' : ''}}" wx:if="{{showGuide}}">
+      <!-- 主按钮 -->
+      <view class="action-card primary-action" bindtap="onStartCreate">
+        <view class="action-icon">🎭</view>
+        <view class="action-content">
+          <text class="action-title">开始打造新人设</text>
+          <text class="action-desc">通过AI对话，定制你的专属人设</text>
+        </view>
+        <text class="action-arrow">›</text>
+      </view>
+
+      <!-- 已有人设时显示 -->
+      <view class="action-card secondary-action" wx:if="{{hasExistingPersona}}" bindtap="onContinuePersona">
+        <view class="action-icon">📊</view>
+        <view class="action-content">
+          <text class="action-title">查看「{{personaName}}」</text>
+          <text class="action-desc">编辑能力维度、调整人设参数</text>
+        </view>
+        <text class="action-arrow">›</text>
+      </view>
+
+      <view class="action-card secondary-action" wx:if="{{hasExistingPersona}}" bindtap="onViewMoments">
+        <view class="action-icon">📱</view>
+        <view class="action-content">
+          <text class="action-title">生成朋友圈内容</text>
+          <text class="action-desc">基于人设自动创作朋友圈动态</text>
+        </view>
+        <text class="action-arrow">›</text>
+      </view>
+
+      <!-- 功能介绍 -->
+      <view class="feature-tags">
+        <view class="feature-tag">
+          <text class="tag-icon">🧠</text>
+          <text>苏格拉底式引导</text>
+        </view>
+        <view class="feature-tag">
+          <text class="tag-icon">📊</text>
+          <text>多维能力分析</text>
+        </view>
+        <view class="feature-tag">
+          <text class="tag-icon">📰</text>
+          <text>实时资讯生成</text>
+        </view>
+        <view class="feature-tag">
+          <text class="tag-icon">🎭</text>
+          <text>角色扮演模拟</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

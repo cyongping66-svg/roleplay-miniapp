@@ -1,0 +1,115 @@
+<!-- pages/adjust/adjust.wxml -->
+<view class="adjust-page">
+  <!-- 基本信息 -->
+  <view class="section card">
+    <text class="section-title">基本信息</text>
+    <view class="form-item">
+      <text class="form-label">人设名称</text>
+      <input class="form-input" value="{{personaName}}" placeholder="输入人设名称" bindinput="onNameChange" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">风格调性</text>
+      <textarea class="form-textarea" value="{{personaStyle}}" placeholder="描述你希望的风格..." bindinput="onStyleChange" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">背景故事</text>
+      <textarea class="form-textarea" value="{{personaBackground}}" placeholder="丰富你的背景故事..." bindinput="onBackgroundChange" />
+    </view>
+  </view>
+
+  <!-- 能力维度调节 -->
+  <view class="section card">
+    <text class="section-title">能力维度调节</text>
+    <text class="section-subtitle">拖动滑块微调你的各项能力指数</text>
+
+    <view wx:for="{{dimensions}}" wx:key="key" class="slider-item">
+      <view class="slider-header">
+        <text class="slider-icon">{{item.icon}}</text>
+        <text class="slider-name">{{item.name}}</text>
+        <text class="slider-value">{{item.value}}</text>
+      </view>
+      <slider
+        class="custom-slider"
+        min="0"
+        max="100"
+        value="{{item.value}}"
+        activeColor="#6C5CE7"
+        backgroundColor="#E8E0FF"
+        block-size="24"
+        block-color="#6C5CE7"
+        data-key="{{item.key}}"
+        bindchange="onSliderChange"
+      />
+      <text class="slider-desc">{{item.description}}</text>
+    </view>
+  </view>
+
+  <!-- 内容配比 -->
+  <view class="section card">
+    <text class="section-title">朋友圈内容配比</text>
+    <text class="section-subtitle">调整不同类型内容的发布比例</text>
+
+    <view class="mix-item">
+      <view class="mix-header">
+        <text>📰 行业资讯</text>
+        <text class="mix-value">{{contentMix.industryNews}}%</text>
+      </view>
+      <slider min="0" max="100" value="{{contentMix.industryNews}}"
+              activeColor="#6C5CE7" backgroundColor="#E8E0FF"
+              block-size="20" block-color="#6C5CE7"
+              data-type="industryNews" bindchange="onMixChange" />
+    </view>
+
+    <view class="mix-item">
+      <view class="mix-header">
+        <text>💭 个人感悟</text>
+        <text class="mix-value">{{contentMix.personalThoughts}}%</text>
+      </view>
+      <slider min="0" max="100" value="{{contentMix.personalThoughts}}"
+              activeColor="#00CEC9" backgroundColor="#D4F1F4"
+              block-size="20" block-color="#00CEC9"
+              data-type="personalThoughts" bindchange="onMixChange" />
+    </view>
+
+    <view class="mix-item">
+      <view class="mix-header">
+        <text>🌿 日常生活</text>
+        <text class="mix-value">{{contentMix.dailyLife}}%</text>
+      </view>
+      <slider min="0" max="100" value="{{contentMix.dailyLife}}"
+              activeColor="#55EFC4" backgroundColor="#D4F9EF"
+              block-size="20" block-color="#55EFC4"
+              data-type="dailyLife" bindchange="onMixChange" />
+    </view>
+
+    <view class="mix-item">
+      <view class="mix-header">
+        <text>🤝 互动交流</text>
+        <text class="mix-value">{{contentMix.interaction}}%</text>
+      </view>
+      <slider min="0" max="100" value="{{contentMix.interaction}}"
+              activeColor="#FDCB6E" backgroundColor="#FEF3D4"
+              block-size="20" block-color="#FDCB6E"
+              data-type="interaction" bindchange="onMixChange" />
+    </view>
+  </view>
+
+  <!-- 发布频率 -->
+  <view class="section card">
+    <text class="section-title">发布频率</text>
+    <picker mode="selector" range="{{frequencyOptions}}" value="{{postFrequencyIndex}}" bindchange="onFrequencyChange">
+      <view class="picker-item">
+        <text>当前频率：{{frequencyOptions[postFrequencyIndex]}}</text>
+        <text class="picker-arrow">›</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 底部操作按钮 -->
+  <view class="bottom-actions">
+    <button class="btn-secondary" bindtap="onReset">重置默认</button>
+    <button class="btn-primary {{hasChanges ? '' : 'disabled'}}" bindtap="onSave">
+      保存修改
+    </button>
+  </view>
+</view>

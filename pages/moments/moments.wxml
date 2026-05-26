@@ -1,0 +1,125 @@
+<!-- pages/moments/moments.wxml -->
+<view class="moments-page">
+  <!-- 顶部人设信息 -->
+  <view class="moments-header" wx:if="{{persona}}">
+    <view class="header-cover">
+      <view class="header-overlay"></view>
+      <view class="header-info">
+        <view class="header-avatar">
+          <text>🎭</text>
+        </view>
+        <view class="header-text">
+          <text class="header-name">{{persona.name}}</text>
+          <text class="header-desc">{{persona.description}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 控制栏 -->
+  <view class="control-bar">
+    <view class="control-left">
+      <text class="control-label">生成条数：</text>
+      <picker mode="selector" range="{{countOptions}}" bindchange="onCountChange">
+        <text class="count-picker">{{generationCount}} 条 ▾</text>
+      </picker>
+    </view>
+    <view class="control-right">
+      <view class="refresh-btn" bindtap="onRefreshAll" wx:if="{{moments.length > 0}}">
+        <text>🔄 全部刷新</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 生成按钮 -->
+  <view class="generate-section" wx:if="{{isEmpty && !loading}}">
+    <view class="empty-card">
+      <text class="empty-icon">📱</text>
+      <text class="empty-title">朋友圈内容生成器</text>
+      <text class="empty-desc">基于你的人设和最新资讯，自动生成拟真的朋友圈内容</text>
+      <button class="btn-primary generate-btn" bindtap="onGenerate">
+        ✨ 一键生成朋友圈
+      </button>
+    </view>
+  </view>
+
+  <!-- 加载动画 -->
+  <view class="loading-section" wx:if="{{loading}}">
+    <view class="loading-card">
+      <view class="loading-anim">
+        <text class="loading-emoji">🤖</text>
+      </view>
+      <text class="loading-text">正在为你创作朋友圈内容...</text>
+      <view class="loading-dots">
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 朋友圈内容列表 -->
+  <view class="moments-list" wx:if="{{moments.length > 0 && !loading}}">
+    <view class="list-header">
+      <text class="list-title">已生成 {{moments.length}} 条内容</text>
+      <view class="regenerate-btn" bindtap="onGenerate">
+        <text>🔄 重新生成</text>
+      </view>
+    </view>
+
+    <view
+      wx:for="{{moments}}"
+      wx:key="index"
+      class="moment-card {{copiedIndex === index ? 'copied' : ''}}"
+      data-index="{{index}}"
+      bindtap="onCopyContent"
+      bindlongpress="onLongPress"
+    >
+      <!-- 时间和类型标签 -->
+      <view class="moment-meta">
+        <text class="moment-time">🕐 {{item.time}}</text>
+        <text class="moment-type-tag {{item.type}}">
+          {{item.type === 'news_share' ? '📰 资讯' :
+            item.type === 'personal' ? '💭 感悟' :
+            item.type === 'daily' ? '🌿 日常' :
+            item.type === 'interaction' ? '🤝 互动' : '📝 动态'}}
+        </text>
+      </view>
+
+      <!-- 标题（新闻分享时有） -->
+      <text class="moment-title" wx:if="{{item.title}}">{{item.title}}</text>
+
+      <!-- 正文 -->
+      <text class="moment-content">{{item.content}}</text>
+
+      <!-- 新闻标签 -->
+      <view class="news-tags" wx:if="{{item.newsTags}}">
+        <text wx:for="{{item.newsTags}}" wx:for-item="tag" wx:key="*this" class="news-tag">#{{tag}}</text>
+        <text class="news-source" wx:if="{{item.newsSource}}">来源：{{item.newsSource}}</text>
+      </view>
+
+      <!-- 操作栏 -->
+      <view class="moment-actions">
+        <view class="action-item" data-index="{{index}}" catchtap="onRefreshItem">
+          <text>🔄</text>
+          <text class="action-text">刷新</text>
+        </view>
+        <view class="action-item" data-index="{{index}}" catchtap="onCopyContent">
+          <text>📋</text>
+          <text class="action-text">{{copiedIndex === index ? '已复制' : '复制'}}</text>
+        </view>
+        <view class="action-item">
+          <text>❤️</text>
+          <text class="action-text">{{item.likes}}</text>
+        </view>
+        <view class="action-item">
+          <text>💬</text>
+          <text class="action-text">{{item.comments}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部留白 -->
+  <view style="height: 120rpx;"></view>
+</view>

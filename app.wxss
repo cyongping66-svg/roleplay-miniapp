@@ -1,0 +1,187 @@
+/* ============================================
+   人设工坊 - 全局样式
+   ============================================ */
+
+page {
+  --primary: #6C5CE7;
+  --primary-light: #A29BFE;
+  --primary-dark: #5A4BD1;
+  --accent: #00CEC9;
+  --accent-light: #81ECEC;
+  --warning: #FDCB6E;
+  --danger: #FF7675;
+  --success: #55EFC4;
+  --bg: #F8F9FE;
+  --bg-card: #FFFFFF;
+  --text-primary: #2D3436;
+  --text-secondary: #636E72;
+  --text-hint: #B2BEC3;
+  --shadow: 0 4rpx 20rpx rgba(108, 92, 231, 0.08);
+  --shadow-lg: 0 8rpx 40rpx rgba(108, 92, 231, 0.15);
+  --radius: 24rpx;
+  --radius-lg: 32rpx;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+/* 容器 */
+.container {
+  padding: 32rpx;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 卡片 */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+}
+
+/* 渐变按钮 */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #FFFFFF;
+  border: none;
+  border-radius: 48rpx;
+  padding: 24rpx 48rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 8rpx 24rpx rgba(108, 92, 231, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
+  box-shadow: 0 4rpx 12rpx rgba(108, 92, 231, 0.2);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 2rpx solid var(--primary);
+  border-radius: 48rpx;
+  padding: 20rpx 48rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* 渐变背景 */
+.gradient-bg {
+  background: linear-gradient(135deg, #6C5CE7 0%, #A29BFE 50%, #81ECEC 100%);
+}
+
+/* 标题 */
+.section-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 24rpx;
+}
+
+.section-subtitle {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  margin-bottom: 32rpx;
+}
+
+/* 动画关键帧 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16rpx); }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 加载态 */
+.loading-dots {
+  display: flex;
+  gap: 12rpx;
+  justify-content: center;
+  padding: 24rpx;
+}
+
+.loading-dots .dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: var(--primary-light);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.loading-dots .dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots .dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* 标签 */
+.tag {
+  display: inline-block;
+  background: rgba(108, 92, 231, 0.1);
+  color: var(--primary);
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  margin-right: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.tag-accent {
+  background: rgba(0, 206, 201, 0.1);
+  color: var(--accent);
+}
+
+/* 分割线 */
+.divider {
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+  margin: 32rpx 0;
+}
+
+/* 空态 */
+.empty-state {
+  text-align: center;
+  padding: 80rpx 40rpx;
+}
+
+.empty-state .emoji {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-state .text {
+  color: var(--text-hint);
+  font-size: 28rpx;
+}

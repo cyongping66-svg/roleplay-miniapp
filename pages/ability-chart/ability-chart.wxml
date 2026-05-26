@@ -1,0 +1,141 @@
+<!-- pages/ability-chart/ability-chart.wxml -->
+<view class="chart-page">
+  <!-- 人设头卡 -->
+  <view class="persona-header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="persona-avatar">
+        <text class="avatar-emoji">🎭</text>
+      </view>
+      <text class="persona-name">{{persona.name}}</text>
+      <text class="persona-desc">{{persona.description}}</text>
+      <view class="persona-tags">
+        <text wx:for="{{persona.tags}}" wx:key="*this" class="tag">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 综合评分 -->
+  <view class="score-card">
+    <view class="score-circle">
+      <text class="score-number">{{overallScore}}</text>
+      <text class="score-label">综合评分</text>
+    </view>
+    <view class="score-info">
+      <text class="score-level">
+        {{overallScore >= 80 ? '优秀' : overallScore >= 60 ? '良好' : '发展中'}}
+      </text>
+      <text class="score-desc">你的多维能力图谱</text>
+    </view>
+  </view>
+
+  <!-- 雷达图 -->
+  <view class="radar-section card">
+    <text class="section-title">能力雷达图</text>
+    <view class="radar-container">
+      <svg viewBox="0 0 500 500" class="radar-svg">
+        <!-- 网格圈 -->
+        <circle cx="250" cy="250" r="180" fill="none" stroke="#E8E0FF" stroke-width="1" />
+        <circle cx="250" cy="250" r="135" fill="none" stroke="#E8E0FF" stroke-width="1" />
+        <circle cx="250" cy="250" r="90" fill="none" stroke="#E8E0FF" stroke-width="1" />
+        <circle cx="250" cy="250" r="45" fill="none" stroke="#E8E0FF" stroke-width="1" />
+
+        <!-- 轴线 -->
+        <block wx:for="{{radarLabels}}" wx:key="name">
+          <line x1="250" y1="250" x2="{{item.x > 250 ? 430 : item.x < 250 ? 70 : 250}}"
+                y2="{{item.y > 250 ? 430 : item.y < 250 ? 70 : 250}}"
+                stroke="#E8E0FF" stroke-width="1" />
+        </block>
+
+        <!-- 数据区域 -->
+        <polygon points="{{radarPoints}}" fill="rgba(108, 92, 231, 0.15)" stroke="#6C5CE7" stroke-width="2" />
+
+        <!-- 数据点 -->
+        <block wx:for="{{radarLabels}}" wx:key="name">
+          <circle cx="{{radarPoints.split(' ')[index].split(',')[0]}}"
+                  cy="{{radarPoints.split(' ')[index].split(',')[1]}}"
+                  r="6" fill="#6C5CE7" />
+        </block>
+
+        <!-- 标签 -->
+        <block wx:for="{{radarLabels}}" wx:key="name">
+          <text x="{{item.x}}" y="{{item.y}}" text-anchor="{{item.anchor}}"
+                fill="#636E72" font-size="20" dominant-baseline="middle">
+            {{item.icon}} {{item.name}}
+          </text>
+        </block>
+      </svg>
+    </view>
+  </view>
+
+  <!-- 维度详情列表 -->
+  <view class="dimensions-list card">
+    <text class="section-title">维度详情</text>
+    <view
+      wx:for="{{dimensions}}"
+      wx:key="key"
+      class="dimension-item"
+      data-index="{{index}}"
+      bindtap="onDimensionTap"
+    >
+      <view class="dim-header">
+        <text class="dim-icon">{{item.icon}}</text>
+        <text class="dim-name">{{item.name}}</text>
+        <text class="dim-value">{{item.value}}</text>
+      </view>
+      <view class="dim-bar-container">
+        <view class="dim-bar-bg">
+          <view class="dim-bar" style="width: {{item.value}}%; background: {{item.value >= 80 ? '#55EFC4' : item.value >= 60 ? '#6C5CE7' : '#FDCB6E'}};"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最强维度 -->
+  <view class="strengths-section card">
+    <text class="section-title">你的核心优势</text>
+    <view class="strengths-list">
+      <view wx:for="{{strengths}}" wx:key="key" class="strength-item">
+        <text class="strength-rank">TOP {{index + 1}}</text>
+        <text class="strength-icon">{{item.icon}}</text>
+        <view class="strength-info">
+          <text class="strength-name">{{item.name}}</text>
+          <text class="strength-score">{{item.value}}分</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提升建议 -->
+  <view class="suggestions-section card" wx:if="{{suggestions.length > 0}}">
+    <text class="section-title">提升建议</text>
+    <view wx:for="{{suggestions}}" wx:key="dimension" class="suggestion-item">
+      <view class="suggestion-header">
+        <text class="suggestion-icon">{{item.icon}}</text>
+        <text class="suggestion-dim">{{item.dimension}}</text>
+        <text class="suggestion-current">当前 {{item.current}}分</text>
+      </view>
+      <text class="suggestion-tip">{{item.tip}}</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="btn-secondary" bindtap="goToAdjust">调整参数</button>
+    <button class="btn-primary" bindtap="goToMoments">生成朋友圈</button>
+  </view>
+
+  <!-- 维度详情弹窗 -->
+  <view class="detail-mask" wx:if="{{showDetail}}" bindtap="closeDetail">
+    <view class="detail-popup" catchtap="">
+      <view class="detail-close" bindtap="closeDetail">✕</view>
+      <text class="detail-icon">{{selectedDimension.icon}}</text>
+      <text class="detail-name">{{selectedDimension.name}}</text>
+      <text class="detail-score">{{selectedDimension.value}} / 100</text>
+      <text class="detail-desc">{{selectedDimension.description}}</text>
+      <view class="detail-bar-bg">
+        <view class="detail-bar" style="width: {{selectedDimension.value}}%;"></view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,110 @@
+<!-- pages/questionnaire/questionnaire.wxml -->
+<view class="questionnaire-page">
+  <!-- 顶部进度条 -->
+  <view class="progress-bar-container">
+    <view class="progress-bar" style="width: {{progress}}%;"></view>
+    <text class="progress-text">{{progress}}%</text>
+  </view>
+
+  <!-- 对话区域 -->
+  <scroll-view
+    class="chat-scroll"
+    scroll-y
+    scroll-into-view="{{scrollToView}}"
+    scroll-with-animation
+    enhanced
+    show-scrollbar="{{false}}"
+  >
+    <!-- 欢迎消息 -->
+    <view class="welcome-card fade-in-up">
+      <view class="welcome-icon">🎭</view>
+      <text class="welcome-text">让我们开始打造你的人设吧！我会通过几个关键问题来了解你的需求。</text>
+    </view>
+
+    <!-- 消息列表 -->
+    <block wx:for="{{messages}}" wx:key="id">
+      <view id="{{item.id}}" class="message-row {{item.role === 'user' ? 'user-row' : 'ai-row'}}">
+        <!-- AI头像 -->
+        <view class="msg-avatar" wx:if="{{item.role === 'ai'}}">
+          <text>🤖</text>
+        </view>
+
+        <!-- 消息气泡 -->
+        <view class="msg-bubble {{item.role}}-bubble {{item.isQuestion ? 'question-bubble' : ''}}">
+          <text class="msg-text" user-select>{{item.content}}</text>
+        </view>
+
+        <!-- 用户头像 -->
+        <view class="msg-avatar" wx:if="{{item.role === 'user'}}">
+          <text>👤</text>
+        </view>
+      </view>
+    </block>
+
+    <!-- 打字中指示器 -->
+    <view class="message-row ai-row" wx:if="{{isTyping}}">
+      <view class="msg-avatar">
+        <text>🤖</text>
+      </view>
+      <view class="msg-bubble ai-bubble typing-bubble">
+        <view class="typing-dots">
+          <view class="dot"></view>
+          <view class="dot"></view>
+          <view class="dot"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 完成后的操作区 -->
+    <view class="completion-section" wx:if="{{isComplete}}">
+      <view class="completion-card fade-in-up">
+        <text class="completion-icon">🎉</text>
+        <text class="completion-title">人设创建完成！</text>
+        <text class="completion-desc">我已经根据你的回答生成了专属人设和多维能力表</text>
+        <button class="btn-primary" bindtap="goToAbilityChart">
+          查看能力表 →
+        </button>
+      </view>
+    </view>
+
+    <!-- 底部留白 -->
+    <view style="height: 200rpx;"></view>
+  </scroll-view>
+
+  <!-- 提示标签区 -->
+  <view class="hints-area" wx:if="{{showHints && !isComplete}}">
+    <scroll-view scroll-x class="hints-scroll" enhanced show-scrollbar="{{false}}">
+      <view class="hints-container">
+        <view
+          wx:for="{{currentHints}}"
+          wx:key="*this"
+          class="hint-tag"
+          data-hint="{{item}}"
+          bindtap="onTapHint"
+        >
+          {{item}}
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 输入区域 -->
+  <view class="input-area" wx:if="{{!isComplete}}">
+    <view class="input-container">
+      <input
+        class="msg-input"
+        value="{{inputValue}}"
+        placeholder="输入你的回答..."
+        placeholder-class="input-placeholder"
+        bindinput="onInputChange"
+        bindconfirm="onConfirm"
+        confirm-type="send"
+        adjust-position="{{true}}"
+        cursor-spacing="20"
+      />
+      <view class="send-btn {{canSend ? 'active' : ''}}" bindtap="sendMessage">
+        <text>发送</text>
+      </view>
+    </view>
+  </view>
+</view>

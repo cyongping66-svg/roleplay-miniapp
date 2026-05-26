@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/questionnaire/questionnaire",
+    "pages/ability-chart/ability-chart",
+    "pages/adjust/adjust",
+    "pages/moments/moments",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#6C5CE7",
+    "navigationBarTitleText": "人设工坊",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F8F9FE"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#6C5CE7",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/tab-home.png",
+        "selectedIconPath": "assets/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/moments/moments",
+        "text": "朋友圈",
+        "iconPath": "assets/tab-moments.png",
+        "selectedIconPath": "assets/tab-moments-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/tab-profile.png",
+        "selectedIconPath": "assets/tab-profile-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}
